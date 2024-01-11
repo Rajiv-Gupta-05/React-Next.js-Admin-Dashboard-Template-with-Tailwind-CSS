@@ -18,7 +18,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import { Collapse } from "@mui/material";
-import ExpandLessIcon  from "@mui/icons-material/ExpandLess";
+import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import Image from "next/image";
 import logo from "./logo.gif";
@@ -32,7 +32,8 @@ import HelpIcon from "@mui/icons-material/Help";
 import LibraryBooksIcon from "@mui/icons-material/LibraryBooks";
 import RecommendIcon from "@mui/icons-material/Recommend";
 import LiveHelpIcon from "@mui/icons-material/LiveHelp";
-
+import { useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 
 const drawerWidth = 240;
 
@@ -41,6 +42,8 @@ function Layout(props) {
   const { children } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [isCollapse, setIsCollapse] = React.useState(false);
+  const router = useRouter();
+  const pathname = usePathname();
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -53,17 +56,46 @@ function Layout(props) {
   const drawer = (
     <div>
       <Toolbar>
-        <Image className="-ml-2 mr-2" src={logo} height={60} width={60} alt="" />
-      <Typography variant="h6" noWrap component="div">
-            Rajiv_Rocking
-          </Typography>
-        </Toolbar>
+        <Image
+          className="-ml-2 mr-2"
+          src={logo}
+          height={60}
+          width={60}
+          alt=""
+        />
+        <Typography variant="h6" noWrap component="div">
+          Rajiv_Rocking
+        </Typography>
+      </Toolbar>
       <Divider />
       <List>
-        {["Dashboard", "Analytics", "Users", "Projects", "Messages", "Settings", "Profile"].map((text, index) => (
-          <ListItem key={text} disablePadding>
+        {[
+          "Dashboard",
+          "Analytics",
+          "Users",
+          "Projects",
+          "Messages",
+          "Settings",
+          "Profile",
+        ].map((text, index) => (
+          <ListItem
+            key={text}
+            disablePadding
+            className={
+              pathname.startsWith("/" + text.toLowerCase())
+                ? "text-sky-600 bg-slate-100"
+                : "text-slate-700"
+            }
+            onClick={()=>{router.push("/" + text.toLowerCase())}}
+          >
             <ListItemButton>
-              <ListItemIcon>
+              <ListItemIcon
+                className={
+                  pathname.startsWith("/" + text.toLowerCase())
+                    ? "text-sky-600 bg-slate-100"
+                    : "text-slate-700"
+                }
+              >
                 {index === 0 && <SpaceDashboardIcon />}
                 {index === 1 && <QueryStatsIcon />}
                 {index === 2 && <PeopAltIcon />}
@@ -77,10 +109,20 @@ function Layout(props) {
           </ListItem>
         ))}
         <Divider />
-        <ListItem disablePadding onClick={handleCollapse}>
+        <ListItem
+          disablePadding
+          onClick={handleCollapse}
+          className={
+            pathname.startsWith("/help") ? "text-sky-600 bg-slate-100" : "text-slate-700"
+          }
+        >
           <ListItemButton>
-            <ListItemIcon>
-              <MailIcon />
+            <ListItemIcon
+              className={
+                pathname.startsWith("/help") ? "text-sky-600 bg-slate-100" : "text-slate-700"
+              }
+            >
+              <HelpIcon />
             </ListItemIcon>
             <ListItemText primary="Help" />
             {isCollapse ? <ExpandLessIcon /> : <ExpandMoreIcon />}
@@ -89,13 +131,25 @@ function Layout(props) {
       </List>
       <Collapse in={isCollapse} timeout="auto" unmountOnExit>
         <List className="ml-4">
-          {["Support", "Contact", "Docs"].map((text, index) => (
-            <ListItem key={text} disablePadding>
+          {["Library", "Support", "FAQ"].map((text, index) => (
+            <ListItem
+              key={text}
+              disablePadding
+              className={
+                pathname.startsWith("/help") ? "text-sky-600 bg-slate-100" : "text-slate-700"
+              }
+            >
               <ListItemButton>
-                <ListItemIcon>
-                  {index === 0 && <RecommendIcon />}
-                  {index === 1 && <LiveHelpIcon />}
-                  {index === 2 && <LibraryBooksIcon />}
+                <ListItemIcon
+                  className={
+                    pathname.startsWith("/help")
+                      ? "text-sky-600 bg-slate-100"
+                      : "text-slate-700"
+                  }
+                >
+                  {index === 0 && <LibraryBooksIcon />}
+                  {index === 1 && <RecommendIcon />}
+                  {index === 2 && <LiveHelpIcon />}
                 </ListItemIcon>
                 <ListItemText primary={text} />
               </ListItemButton>
