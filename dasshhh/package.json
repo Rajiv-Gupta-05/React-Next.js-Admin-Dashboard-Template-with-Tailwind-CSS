@@ -13,6 +13,8 @@
     "@emotion/styled": "^11.11.0",
     "@mui/icons-material": "^5.15.3",
     "@mui/material": "^5.15.3",
+    "axios": "^1.6.5",
+    "material-react-table": "^2.5.2",
     "mysql2": "^3.7.0",
     "next": "14.0.4",
     "prop-types": "^15.8.1",
