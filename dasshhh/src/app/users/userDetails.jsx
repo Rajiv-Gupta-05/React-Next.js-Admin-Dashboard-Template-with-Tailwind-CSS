@@ -1,5 +1,5 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import TextField from "@mui/material/TextField";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
@@ -9,10 +9,11 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import Button from "@mui/material/Button";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 import { object } from "prop-types";
+import ReplyAllRoundedIcon from "@mui/icons-material/ReplyAllRounded";
 
 const schema = yup
   .object({
@@ -21,48 +22,94 @@ const schema = yup
   })
   .required();
 
-export default function userDetails() {
+export default function userDetails({ handleIsAddClose, rows }) {
   const [utype, setUtype] = useState("User");
 
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(schema),
   });
+
+  useEffect(() => {
+    if (rows) {
+      setUtype(rows.type);
+      reset({
+        id: rows.id,
+        name: rows.name,
+        email: rows.email,
+      });
+    }
+  }, []);
+
   const onSubmit = (data) => {
     Object.assign(data, { type: utype });
     console.log(data);
 
-    axios
-      .post("/api/users", data)
-      .then((response) => {
-        console.log("Data", response);
-        toast.success("👤 User Added Successfully!", {
-          position: "top-right",
-          autoClose: 3000,
-          hideProgressBar: true,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "colored",
+    if (rows) {
+      axios
+        .put("/api/users", data)
+        .then((response) => {
+          console.log("Data", response);
+          toast.success("👤 User Added Successfully!", {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+          });
+          handleIsAddClose();
+        })
+        .catch((err) => {
+          console.log("Error", err);
+          toast.error(err, {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
         });
-      })
-      .catch((err) => {
-        console.log("Error", err);
-        toast.error(err, {
-          position: "top-right",
-          autoClose: 3000,
-          hideProgressBar: true,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
+    } else {
+      axios
+        .post("/api/users", data)
+        .then((response) => {
+          console.log("Data", response);
+          toast.success("👤 User Added Successfully!", {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+          });
+          handleIsAddClose();
+        })
+        .catch((err) => {
+          console.log("Error", err);
+          toast.error(err, {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
         });
-      });
+    }
   };
 
   const handleChange = (event) => {
@@ -71,7 +118,13 @@ export default function userDetails() {
 
   return (
     <>
-      <ToastContainer />
+      <div className="flex justify-start">
+        <ReplyAllRoundedIcon
+          className="mr-2 cursor-pointer"
+          onClick={() => handleIsAddClose()}
+        />
+        <h2 className="font-bold"> Add Users</h2>
+      </div>
       <form className="mt-4" onSubmit={handleSubmit(onSubmit)}>
         <div className="grid sm:grid-cols-1 md:grid-cols-3 gap-5">
           <div>

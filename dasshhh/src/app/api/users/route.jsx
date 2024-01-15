@@ -2,7 +2,7 @@ import { query } from "@/lib/db";
 
 export async function GET(request) {
   const users = await query({
-    query: "SELECT * FROM users",
+    query: "SELECT * FROM users ORDER BY id DESC",
     values: [],
   });
 
@@ -49,10 +49,10 @@ export async function POST(request) {
 
 export async function PUT(request) {
   try {
-    const { id, email } = await request.json();
+    const { id, email, name, type } = await request.json();
     const updateProducts = await query({
-      query: "UPDATE users SET email = ? WHERE id = ?",
-      values: [email, id],
+      query: "UPDATE users SET email = ?, name = ?, type = ? WHERE id = ?",
+      values: [email, name, type, id],
     });
     const result = updateProducts.affectedRows;
     let message = "";
