@@ -54,7 +54,7 @@ export default function userDetails({ handleIsAddClose, rows }) {
         .put("/api/users", data)
         .then((response) => {
           console.log("Data", response);
-          toast.success("👤 User Added Successfully!", {
+          toast.success("👤 User Updated Successfully!", {
             position: "top-right",
             autoClose: 3000,
             hideProgressBar: true,
