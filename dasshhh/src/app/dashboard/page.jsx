@@ -116,7 +116,7 @@ export default function Dashboard() {
         </div>
         <div className="mt-10 grid grid-cols-3 gap-10">
           <div className="lg:col-span-1 sm:col-span-3 xs:col-span-3">
-            <div className="bg-gradient-to-r from-blue-600 via-blue-500 to-blue-400 rounded-xl shadow-lg hover:scale-110 relative">
+            <div className="bg-gradient-to-r from-blue-600 via-blue-500 to-blue-400 rounded-xl shadow-lg hover:scale-110 min-h-full relative">
               <div className="flex flex-col justify-center items-center">
                 <div className="mt-4 roundprogressbar">
                   <Circle
