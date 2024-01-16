@@ -1,11 +1,10 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Login | Next Dashboard | rajivgupta.rf.gd",
+  title: "Signup | Next Dashboard | rajivgupta.rf.gd",
   description: "Advance Next Dashboard",
 };
 
